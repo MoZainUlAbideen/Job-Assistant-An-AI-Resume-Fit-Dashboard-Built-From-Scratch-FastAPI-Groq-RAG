@@ -1,4 +1,4 @@
-# JobControl — Resume-Fit Intelligence
+# Job Assistant — Resume-Fit Intelligence
 
 An AI-assisted job search tool: upload your resume, capture job postings
 (manually or via a bulk-scanning Chrome extension), and get a fit score,
@@ -45,4 +45,4 @@ Then open `http://localhost:8000/`.
 
 ## License
 
-Personal portfolio project — no license specified yet.
+Personal portfolio project — MIT License.
