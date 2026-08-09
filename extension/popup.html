@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  :root {
+    --ink: #0B1220;
+    --ink-2: #121B2E;
+    --hairline: #263252;
+    --amber: #F0A93B;
+    --paper: #E7EBF0;
+    --paper-dim: #8B95AC;
+    --signal-good: #6FBF9E;
+    --signal-bad: #D97D6C;
+  }
+  * { box-sizing: border-box; }
+  body {
+    width: 300px;
+    margin: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Segoe UI', sans-serif;
+    padding: 16px;
+  }
+  .title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .title span { color: var(--amber); }
+  .subtitle {
+    font-size: 11px;
+    color: var(--paper-dim);
+    margin-bottom: 14px;
+  }
+  label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 4px;
+    margin-top: 12px;
+  }
+  input {
+    width: 100%;
+    background: var(--ink-2);
+    border: 1px solid var(--hairline);
+    color: var(--paper);
+    border-radius: 3px;
+    padding: 7px 9px;
+    font-size: 12px;
+    font-family: monospace;
+  }
+  input:focus { outline: none; border-color: var(--amber); }
+  button {
+    width: 100%;
+    margin-top: 14px;
+    background: transparent;
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    border-radius: 3px;
+    padding: 9px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  button:hover { background: var(--amber); color: var(--ink); }
+  button:disabled { border-color: var(--hairline); color: var(--paper-dim); cursor: not-allowed; }
+  #status {
+    margin-top: 12px;
+    font-size: 11px;
+    font-family: monospace;
+    color: var(--paper-dim);
+    min-height: 14px;
+    line-height: 1.5;
+  }
+  #status.ok { color: var(--signal-good); }
+  #status.err { color: var(--signal-bad); }
+  #results {
+    margin-top: 10px;
+    max-height: 160px;
+    overflow-y: auto;
+    font-size: 11px;
+  }
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .result-row .score { color: var(--amber); font-family: monospace; }
+</style>
+</head>
+<body>
+  <div class="title">JOB <span>CONTROL</span> CAPTURE</div>
+  <div class="subtitle">Scans job listings on the page you're viewing.</div>
+
+  <label for="apiUrl">Backend URL</label>
+  <input id="apiUrl" type="text" value="http://127.0.0.1:8000">
+
+  <label for="resumeId">Resume ID</label>
+  <input id="resumeId" type="number" placeholder="e.g. 1">
+
+  <button id="scanBtn">Scan &amp; capture this page</button>
+  <div id="status"></div>
+  <div id="results"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
