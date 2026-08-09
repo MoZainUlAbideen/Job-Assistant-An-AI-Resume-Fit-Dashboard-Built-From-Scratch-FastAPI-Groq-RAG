@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 backend/venv/
 venv/
 .venv/
@@ -6,3 +7,21 @@ __pycache__/
 .env
 extension/node_modules/
 node_modules/
+=======
+# Python
+__pycache__/
+*.pyc
+venv/
+*.db
+
+# Environment secrets
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+>>>>>>> 8ec79e78165166b94806e67305ada1b3d8fe5845
