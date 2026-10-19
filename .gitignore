@@ -1,27 +1,21 @@
-<<<<<<< HEAD
-backend/venv/
-venv/
-.venv/
-__pycache__/
-*.pyc
-.env
-extension/node_modules/
-node_modules/
-=======
 # Python
 __pycache__/
 *.pyc
+.venv/
 venv/
-*.db
+backend/venv/
+.pytest_cache/
 
-# Environment secrets
+# Secrets & local data
 .env
+*.db
+backend/eval/private/
 
-# OS
+# OS / editor
 .DS_Store
 Thumbs.db
-
-# Editor
 .vscode/
 .idea/
->>>>>>> 8ec79e78165166b94806e67305ada1b3d8fe5845
+
+# Node (if you ever add tooling)
+node_modules/

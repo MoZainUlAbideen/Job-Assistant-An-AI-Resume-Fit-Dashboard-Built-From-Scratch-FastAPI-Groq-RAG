@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Job Assistant — ATS resume check</title>
+  <meta name="description" content="Check how an applicant tracking system reads your resume against a job description, and get edits that never invent experience.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <p class="brand">Job Assistant</p>
+      <p class="tag">See your resume the way an applicant tracking system does.</p>
+    </div>
+  </header>
+
+  <main class="wrap layout">
+    <form id="form" class="inputs" novalidate>
+      <h1>Check a resume against a job</h1>
+      <p class="lede">Scoring is rule-based, so the same resume and job always get the same score. Suggested edits only use what's already on your resume.</p>
+
+      <label class="field">
+        <span class="field-label">Resume</span>
+        <span class="drop" id="drop">
+          <input type="file" id="resume" accept=".pdf,.docx,.txt" required>
+          <span id="drop-text">Choose a PDF or DOCX, or drop it here</span>
+        </span>
+      </label>
+
+      <label class="field">
+        <span class="field-label">Job title <span class="opt">optional</span></span>
+        <input type="text" id="title" placeholder="e.g. Machine Learning Engineer" autocomplete="off">
+      </label>
+
+      <label class="field">
+        <span class="field-label">Job description</span>
+        <textarea id="jd" rows="14" placeholder="Paste the full posting: responsibilities, requirements, nice-to-haves." required></textarea>
+      </label>
+
+      <div class="actions">
+        <button type="submit" id="scan-btn" class="primary">Check resume</button>
+        <button type="button" id="tailor-btn" class="secondary" disabled>Tailor resume</button>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <p class="privacy">Nothing is stored. Your resume is read for this request and discarded.</p>
+    </form>
+
+    <section id="results" class="results" aria-live="polite">
+      <div class="empty">
+        <p class="empty-title">Your report shows up here.</p>
+        <p>You'll see a match score, which of the job's keywords your resume has, anything that could get you filtered out automatically, and layout problems that make resumes unreadable to ATS software.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Scores are an estimate of keyword and format fit. Real ATS products differ, and a human still reads your resume.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
