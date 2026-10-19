@@ -1,0 +1,22 @@
+[project]
+name = "job-assistant-backend"
+version = "2.0.0"
+description = "ATS-style resume scanner + grounded resume tailoring API"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.146.0",
+    "uvicorn[standard]==0.54.0",
+    "python-multipart==0.0.32",
+    "pydantic==2.14.1",
+    "pdfplumber==0.11.10",
+    "python-docx==1.2.0",
+    "groq==1.7.0",
+    "python-dotenv==1.0.1",
+]
+
+[dependency-groups]
+dev = ["pytest==8.3.4", "httpx==0.28.1", "reportlab==4.2.5"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

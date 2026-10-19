@@ -1,0 +1,22 @@
+Senior Machine Learning Engineer (Remote)
+About us
+We are an AI-first company running everything on Kubernetes.
+
+What you'll do
+- Train and deploy deep learning models with PyTorch or TensorFlow
+- Build retrieval-augmented generation (RAG) features on top of LLMs
+- Design REST APIs in Python
+
+Requirements:
+- 3+ years of experience in machine learning
+- Strong SQL; experience with Docker
+- Bachelor's degree in Computer Science or a related field; Master's preferred
+- Excellent communication skills
+
+Nice to have
+- AWS, GCP, or Azure
+- Experience with Kubernetes
+- Familiarity with Airflow is a plus
+
+Benefits
+- Learning budget for Spark courses

@@ -1,0 +1,166 @@
+{
+ "_about": "Hand-labelled bullet rewrites against tests/fixtures/resume_ayesha.txt. label: honest = a recruiter would agree it's the same work, just using the JD's term; everything else should be blocked. Several 'bad' cases are modelled on real v1 output (e.g. 'implying agent-like capabilities').",
+ "cases": [
+  {
+   "bullet_startswith": "Built a document classification service",
+   "targets": [
+    "Deep Learning"
+   ],
+   "rewritten": "Built a deep learning document classification service in PyTorch and FastAPI serving 2M requests per month.",
+   "label": "honest"
+  },
+  {
+   "bullet_startswith": "Built a document classification service",
+   "targets": [
+    "REST APIs"
+   ],
+   "rewritten": "Built a document classification service with REST APIs in PyTorch and FastAPI serving 2M requests per month.",
+   "label": "honest"
+  },
+  {
+   "bullet_startswith": "Implemented a retrieval pipeline",
+   "targets": [
+    "RAG",
+    "LLMs"
+   ],
+   "rewritten": "Implemented a RAG pipeline over 5,000 resumes using FAISS vector search and Groq-hosted Llama 3 LLMs.",
+   "label": "honest"
+  },
+  {
+   "bullet_startswith": "Implemented a retrieval pipeline",
+   "targets": [
+    "Vector Databases"
+   ],
+   "rewritten": "Implemented a retrieval pipeline over 5,000 resumes using FAISS as a vector database and Groq-hosted Llama 3.",
+   "label": "honest"
+  },
+  {
+   "bullet_startswith": "Reduced model inference latency",
+   "targets": [
+    "MLOps"
+   ],
+   "rewritten": "Reduced model inference latency by 40% through model serving optimisations: ONNX export and request batching.",
+   "label": "honest"
+  },
+  {
+   "bullet_startswith": "Wrote SQL pipelines in PostgreSQL",
+   "targets": [
+    "Data Engineering"
+   ],
+   "rewritten": "Wrote SQL data pipelines in PostgreSQL to build training datasets from 30 million rows.",
+   "label": "honest"
+  },
+  {
+   "bullet_startswith": "Worked on dashboards for the operations team",
+   "targets": [
+    "Data Visualization"
+   ],
+   "rewritten": "Built data visualization dashboards for the operations team using Matplotlib.",
+   "label": "honest"
+  },
+  {
+   "bullet_startswith": "Trained XGBoost churn models",
+   "targets": [
+    "Machine Learning"
+   ],
+   "rewritten": "Trained XGBoost machine learning churn models and presented results to stakeholders.",
+   "label": "honest"
+  },
+  {
+   "bullet_startswith": "Built a document classification service",
+   "targets": [
+    "Kubernetes"
+   ],
+   "rewritten": "Built a document classification service in PyTorch and FastAPI on Kubernetes serving 2M requests per month.",
+   "label": "fabricated_skill"
+  },
+  {
+   "bullet_startswith": "Built a document classification service",
+   "targets": [
+    "Deep Learning"
+   ],
+   "rewritten": "Built a deep learning document classification service in PyTorch and FastAPI serving 5M requests per month.",
+   "label": "fabricated_metric"
+  },
+  {
+   "bullet_startswith": "Reduced model inference latency",
+   "targets": [
+    "MLOps"
+   ],
+   "rewritten": "Reduced model inference latency by 40% for Fortune 500 clients using MLOps, ONNX export and request batching.",
+   "label": "fabricated_claim"
+  },
+  {
+   "bullet_startswith": "Containerized the API with Docker",
+   "targets": [
+    "AI Agents"
+   ],
+   "rewritten": "Containerized the API with Docker and deployed it on a Linux VPS, implying autonomous AI agents capabilities.",
+   "label": "filler"
+  },
+  {
+   "bullet_startswith": "Implemented a retrieval pipeline",
+   "targets": [
+    "AI Agents"
+   ],
+   "rewritten": "Implemented a retrieval pipeline over 5,000 resumes using FAISS vector search and Groq-hosted Llama 3 AI agents.",
+   "label": "fabricated_skill"
+  },
+  {
+   "bullet_startswith": "Wrote SQL pipelines in PostgreSQL",
+   "targets": [
+    "Airflow"
+   ],
+   "rewritten": "Wrote SQL pipelines in PostgreSQL orchestrated with Airflow to build training datasets from 30 million rows.",
+   "label": "fabricated_skill"
+  },
+  {
+   "bullet_startswith": "Worked on dashboards for the operations team",
+   "targets": [
+    "Data Visualization"
+   ],
+   "rewritten": "Applied data visualization expertise to build dashboards for the operations team using Matplotlib.",
+   "label": "filler"
+  },
+  {
+   "bullet_startswith": "Trained XGBoost churn models",
+   "targets": [
+    "Deep Learning"
+   ],
+   "rewritten": "Trained deep learning and XGBoost churn models and presented results to stakeholders.",
+   "label": "fabricated_skill"
+  },
+  {
+   "bullet_startswith": "Wrote SQL pipelines in PostgreSQL",
+   "targets": [
+    "SQL"
+   ],
+   "rewritten": "Utilized SQL pipelines in PostgreSQL to build training datasets from 30 million rows.",
+   "label": "pointless"
+  },
+  {
+   "bullet_startswith": "Built a document classification service",
+   "targets": [
+    "Machine Learning"
+   ],
+   "rewritten": "Led a team of 4 to architect a machine learning platform used across the company.",
+   "label": "fabricated_claim"
+  },
+  {
+   "bullet_startswith": "Containerized the API with Docker",
+   "targets": [
+    "CI/CD"
+   ],
+   "rewritten": "Containerized the API with Docker and shipped it via GitHub Actions CI/CD to a Linux VPS.",
+   "label": "fabricated_skill"
+  },
+  {
+   "bullet_startswith": "Implemented a retrieval pipeline",
+   "targets": [
+    "LLMs"
+   ],
+   "rewritten": "Implemented a retrieval pipeline over 5,000 resumes using FAISS vector search, Groq-hosted Llama 3 and GPT-4o LLMs.",
+   "label": "fabricated_skill"
+  }
+ ]
+}

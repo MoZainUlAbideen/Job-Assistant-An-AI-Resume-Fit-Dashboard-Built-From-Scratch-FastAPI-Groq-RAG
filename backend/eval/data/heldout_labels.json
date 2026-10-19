@@ -1,0 +1,23 @@
+{
+  "_about": "HELD-OUT set: written and labelled after the scanner code was frozen. No code was changed in response to these results.",
+  "h1_mlops.txt": {
+    "required": ["Docker", "Kubernetes", "GCP", "CI/CD", "GitHub Actions", "Prometheus", "Grafana", "ONNX", "TensorRT", "CUDA", "MLOps", "Python", "Bash", "Linux", "Terraform", "Computer Vision"],
+    "preferred": ["Kubeflow|MLflow", "Edge deployment / Jetson"],
+    "min_years": 3, "degree": "bachelor", "title": "MLOps Engineer"
+  },
+  "h2_data_analyst.txt": {
+    "required": ["Power BI", "SQL", "PostgreSQL", "Model Evaluation", "Excel", "Python", "Pandas", "Data Analysis", "Communication", "Stakeholder Management", "Data Visualization"],
+    "preferred": ["Statistics", "Tableau"],
+    "min_years": 0, "degree": null, "title": "Junior Data Analyst - Retail Insights"
+  },
+  "h3_fullstack.txt": {
+    "required": ["Node.js", "Express", "React", "TypeScript", "MongoDB|PostgreSQL", "REST APIs", "GraphQL", "AWS", "Git"],
+    "preferred": ["Docker", "React Native", "Stripe / payments"],
+    "min_years": 3, "degree": null, "title": "Full Stack Engineer (Node.js / React)"
+  },
+  "h4_cv_research.txt": {
+    "required": ["Object Detection", "Image segmentation", "YOLO", "PyTorch", "Sensor Fusion", "Embedded Systems", "Raspberry Pi", "C++", "OpenCV", "Deep Learning", "Python", "Computer Vision"],
+    "preferred": ["ROS", "SLAM", "Research publications"],
+    "min_years": 2, "degree": "master", "title": "Computer Vision Engineer — Autonomous Drones"
+  }
+}

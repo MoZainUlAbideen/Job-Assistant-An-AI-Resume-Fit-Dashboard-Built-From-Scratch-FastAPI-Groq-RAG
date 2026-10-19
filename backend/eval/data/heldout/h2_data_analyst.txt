@@ -1,0 +1,17 @@
+Junior Data Analyst - Retail Insights
+Who we are: a fast-growing grocery delivery company using machine learning for forecasting.
+
+What you'll do
+- Build weekly sales dashboards in Power BI
+- Write SQL queries against our PostgreSQL warehouse
+- Analyse A/B tests and present findings to stakeholders
+
+Requirements
+- 0-2 years of experience; fresh graduates welcome
+- SQL and Microsoft Excel (pivot tables, VLOOKUP)
+- Python (Pandas) for data analysis
+- Strong communication skills
+
+Preferred
+- Statistics coursework
+- Tableau

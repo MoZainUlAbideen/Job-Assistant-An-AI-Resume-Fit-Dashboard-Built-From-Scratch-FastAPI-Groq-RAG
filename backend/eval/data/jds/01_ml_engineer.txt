@@ -1,0 +1,21 @@
+Machine Learning Engineer
+We're hiring an ML engineer to own our recommendation models end to end.
+
+What you'll do
+- Train ranking and recommendation models with PyTorch
+- Ship models behind FastAPI services running in Docker on AWS
+- Build feature pipelines in Spark and schedule them with Airflow
+
+Requirements
+- 2+ years building machine learning systems in production
+- Strong Python and SQL
+- Experience with recommendation systems
+- BS in Computer Science, Statistics or a related field
+
+Nice to have
+- Kubernetes
+- MLflow or Weights & Biases for experiment tracking
+- Experience with A/B testing
+
+About us
+We're a Series B marketplace in Karachi. Benefits include health insurance and a laptop.

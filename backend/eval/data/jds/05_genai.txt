@@ -1,0 +1,12 @@
+Generative AI Engineer
+Responsibilities
+- Build LLM applications and AI agents using LangChain and LangGraph
+- Implement RAG pipelines over internal documents with a vector database (Pinecone or Qdrant)
+- Evaluate model quality and run prompt engineering experiments
+- Deploy services on Azure
+
+Qualifications
+- 1+ years of experience with large language models
+- Python, FastAPI
+- Familiarity with fine-tuning (LoRA) is a plus
+- Bachelor's degree in engineering or a related field; Master's preferred

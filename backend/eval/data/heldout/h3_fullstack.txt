@@ -1,0 +1,13 @@
+Full Stack Engineer (Node.js / React)
+Requirements:
+- 3+ years building web applications
+- Node.js with Express, and React with TypeScript
+- MongoDB or PostgreSQL
+- REST and GraphQL API design
+- AWS (Lambda, S3) deployment experience
+- Git and code reviews
+Nice to have:
+- Docker
+- React Native for mobile
+- Experience with Stripe payments
+About us: We build tools for restaurants. Benefits: health cover, annual bonus.

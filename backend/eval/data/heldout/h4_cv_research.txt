@@ -1,0 +1,17 @@
+Computer Vision Engineer — Autonomous Drones
+We are looking for an engineer to develop perception models for our drones.
+
+Responsibilities
+1. Train object detection and segmentation models (YOLO, Mask R-CNN) in PyTorch
+2. Fuse camera and IMU data (sensor fusion) for state estimation
+3. Deploy models on embedded hardware (NVIDIA Jetson, Raspberry Pi) using C++ and OpenCV
+
+Qualifications
+1. MS or PhD in Computer Science, Robotics or Electrical Engineering
+2. 2+ years of hands-on deep learning experience
+3. Strong C++ and Python
+
+Preferred qualifications
+1. ROS
+2. Experience with SLAM
+3. Publications at CVPR/ICCV

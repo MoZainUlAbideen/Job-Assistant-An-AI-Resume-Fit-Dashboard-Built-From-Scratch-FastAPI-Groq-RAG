@@ -1,203 +1,124 @@
 """
-API layer. This is deliberately thin -- every endpoint just calls into
-resume_parser / job_parser / matching_engine and persists the result.
-Business logic lives in those modules, not here, so it stays testable
-without spinning up a server.
+HTTP API (deployed on Render). Stateless on purpose: nothing is stored --
+the resume and JD live only for the duration of the request. That means no
+database to lose on Render's ephemeral disk, and no one's resume sitting on
+a server (v1 committed a SQLite DB with a real resume in it to GitHub).
+
+Endpoints
+  GET  /api/health   -> liveness + whether the LLM is configured
+  POST /api/scan     -> ATS report (deterministic, no LLM)
+  POST /api/tailor   -> grounded edits + before/after score + tailored .docx (base64)
 """
-# Must run BEFORE importing resume_parser/job_parser below -- those modules
-# instantiate the Anthropic client at import time, which reads
-# ANTHROPIC_API_KEY from the environment. A .env file is just a text file;
-# nothing loads it automatically -- load_dotenv() is what actually copies
-# its contents into this process's environment variables.
+from __future__ import annotations
+
+import base64
+import logging
+import os
+import re
+
 from dotenv import load_dotenv
-load_dotenv()
 
-import json
-from fastapi import FastAPI, UploadFile, File, Depends, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from sqlalchemy.orm import Session
-from pydantic import BaseModel
+load_dotenv(override=True)   # .env wins over a stale GROQ_API_KEY set in Windows env vars
 
-from app.database import init_db, get_db, Resume, Job, Application
-from app.resume_parser import parse_resume
-from app.job_parser import parse_job
-from app.matching_engine import match
-from app.schemas import ParsedResume, ParsedJob
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile  # noqa: E402
+from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 
-app = FastAPI(title="Job Search Assistant API")
+from app import llm  # noqa: E402
+from app.docx_out import build_docx, edit_docx  # noqa: E402
+from app.extract import MAX_BYTES, extract  # noqa: E402
+from app.jd_parser import parse_jd  # noqa: E402
+from app.ratelimit import RateLimiter  # noqa: E402
+from app.resume_parser import parse_resume  # noqa: E402
+from app.scoring import score  # noqa: E402
+from app.skills import find_skills  # noqa: E402
+from app.tailor import tailor  # noqa: E402
 
-# Allows the Chrome extension (running on linkedin.com/indeed.com) and the
-# dashboard (running on its own origin) to call this API from the browser.
-# In production, replace "*" with the extension's actual origin.
-app.add_middleware(
-    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"],
-)
+logging.basicConfig(level=logging.INFO)
+app = FastAPI(title="Job Assistant API", version="2.0.0")
+
+origins = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
+app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"], allow_headers=["*"])
+
+scan_limiter = RateLimiter(per_minute=int(os.getenv("SCAN_PER_MINUTE", "30")),
+                           per_day=int(os.getenv("SCAN_PER_DAY", "500")))
+tailor_limiter = RateLimiter(per_minute=int(os.getenv("TAILOR_PER_MINUTE", "4")),
+                             per_day=int(os.getenv("TAILOR_PER_DAY", "40")))
+
+JD_MIN, JD_MAX = 80, 20_000
 
 
-@app.on_event("startup")
-def on_startup():
-    init_db()
+def _client_ip(request: Request) -> str:
+    fwd = request.headers.get("x-forwarded-for", "")
+    return fwd.split(",")[0].strip() if fwd else (request.client.host if request.client else "unknown")
 
 
-@app.post("/resume/upload")
-async def upload_resume(file: UploadFile = File(...), db: Session = Depends(get_db)):
-    file_bytes = await file.read()
+async def _load(resume: UploadFile, jd_text: str, job_title: str | None):
+    jd_text = (jd_text or "").strip()
+    if len(jd_text) < JD_MIN:
+        raise HTTPException(400, "Paste the full job description (it looks too short).")
+    if len(jd_text) > JD_MAX:
+        raise HTTPException(400, "Job description is too long (20,000 characters max).")
+    data = await resume.read(MAX_BYTES + 1)
     try:
-        parsed: ParsedResume = parse_resume(file_bytes, file.filename)
+        doc = extract(data, resume.filename or "")
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-    resume_row = Resume(raw_text=parsed.raw_text, parsed_json=parsed.model_dump_json())
-    db.add(resume_row)
-    db.commit()
-    db.refresh(resume_row)
-    return {"resume_id": resume_row.id, "parsed": parsed}
-
-
-class JobCaptureRequest(BaseModel):
-    raw_text: str
-    source_url: str | None = None
+        raise HTTPException(400, str(e))
+    parsed = parse_resume(doc.text)
+    jd = parse_jd(jd_text, job_title)
+    if not jd.requirements:
+        raise HTTPException(422, "No recognisable skills found in that job description. Is it the full posting?")
+    return data, doc, parsed, jd
 
 
-@app.post("/jobs/capture")
-def capture_job(payload: JobCaptureRequest, db: Session = Depends(get_db)):
-    parsed: ParsedJob = parse_job(payload.raw_text)
-
-    job_row = Job(
-        title=parsed.title, company=parsed.company, source_url=payload.source_url,
-        raw_text=parsed.raw_text, parsed_json=parsed.model_dump_json(),
-    )
-    db.add(job_row)
-    db.commit()
-    db.refresh(job_row)
-    return {"job_id": job_row.id, "parsed": parsed}
+def _resume_summary(parsed) -> dict:
+    return {
+        "sections": parsed.section_order,
+        "bullets": len([b for b in parsed.bullets if b.section in ("experience", "projects")]),
+        "skills_found": sorted(find_skills(parsed.raw_text)),
+        "experience_years": round(parsed.experience_months / 12, 1),
+        "degree": parsed.degree_level,
+    }
 
 
-class MatchRequest(BaseModel):
-    resume_id: int
-    job_id: int
+@app.get("/api/health")
+def health():
+    return {"ok": True, "llm_configured": llm.available(), "model": llm.model_name()}
 
 
-@app.post("/match/score")
-def score_match(payload: MatchRequest, db: Session = Depends(get_db)):
-    resume_row = db.get(Resume, payload.resume_id)
-    job_row = db.get(Job, payload.job_id)
-    if not resume_row or not job_row:
-        raise HTTPException(status_code=404, detail="resume_id or job_id not found")
-
-    resume = ParsedResume.model_validate_json(resume_row.parsed_json)
-    job = ParsedJob.model_validate_json(job_row.parsed_json)
-    result = match(resume, job)
-
-    application = Application(
-        job_id=job_row.id, resume_id=resume_row.id,
-        fit_score=result.fit_score, match_json=result.model_dump_json(),
-        status="captured",
-    )
-    db.add(application)
-    db.commit()
-    db.refresh(application)
-
-    return {"application_id": application.id, "result": result}
+@app.post("/api/scan")
+async def scan(request: Request, resume: UploadFile = File(...), jd_text: str = Form(...),
+               job_title: str | None = Form(None)):
+    scan_limiter.check(_client_ip(request))
+    _, doc, parsed, jd = await _load(resume, jd_text, job_title)
+    rep = score(doc, parsed, jd)
+    return {"report": rep.to_dict(), "resume": _resume_summary(parsed)}
 
 
-class BatchJobItem(BaseModel):
-    raw_text: str
-    source_url: str | None = None
+@app.post("/api/tailor")
+async def tailor_endpoint(request: Request, resume: UploadFile = File(...), jd_text: str = Form(...),
+                          job_title: str | None = Form(None)):
+    tailor_limiter.check(_client_ip(request))
+    data, doc, parsed, jd = await _load(resume, jd_text, job_title)
+    before = score(doc, parsed, jd)
+    result = tailor(parsed, jd, before)
 
+    accepted = [e for e in result.edits if e.status == "accepted"]
+    skills_line = ("Core Competencies: " + ", ".join(s["keyword"] for s in result.skills_added)
+                   if result.skills_added else None)
+    if doc.file_type == "docx":
+        out_bytes = edit_docx(data, accepted, skills_line)
+    else:
+        out_bytes = build_docx(result.new_text)
 
-class BatchCaptureRequest(BaseModel):
-    resume_id: int
-    jobs: list[BatchJobItem]
+    # re-score the file we're actually handing back -- what an ATS would see
+    new_doc = extract(out_bytes, "tailored.docx")
+    after = score(new_doc, parse_resume(new_doc.text), jd)
 
-
-@app.post("/jobs/capture-batch")
-def capture_batch(payload: BatchCaptureRequest, db: Session = Depends(get_db)):
-    """
-    Takes many raw job postings at once (e.g. every tile visible on a
-    LinkedIn/Indeed search results page) and, for each one: parses it,
-    scores it against the given resume, and stores an Application row --
-    same pipeline as /jobs/capture + /match/score, just looped.
-
-    One bad item shouldn't sink the whole batch -- scraped text from a
-    real search results page is messy (ads, promoted listings, truncated
-    cards), so each job is parsed independently and failures are reported
-    per-item rather than raising for the whole request.
-    """
-    resume_row = db.get(Resume, payload.resume_id)
-    if not resume_row:
-        raise HTTPException(status_code=404, detail="resume_id not found")
-    resume = ParsedResume.model_validate_json(resume_row.parsed_json)
-
-    results = []
-    for item in payload.jobs:
-        try:
-            parsed_job: ParsedJob = parse_job(item.raw_text)
-            job_row = Job(
-                title=parsed_job.title, company=parsed_job.company, source_url=item.source_url,
-                raw_text=parsed_job.raw_text, parsed_json=parsed_job.model_dump_json(),
-            )
-            db.add(job_row)
-            db.commit()
-            db.refresh(job_row)
-
-            match_result = match(resume, parsed_job)
-            application = Application(
-                job_id=job_row.id, resume_id=resume_row.id,
-                fit_score=match_result.fit_score, match_json=match_result.model_dump_json(),
-                status="captured",
-            )
-            db.add(application)
-            db.commit()
-            db.refresh(application)
-
-            results.append({
-                "ok": True,
-                "application_id": application.id,
-                "job_title": parsed_job.title,
-                "company": parsed_job.company,
-                "fit_score": match_result.fit_score,
-            })
-        except Exception as e:
-            db.rollback()
-            results.append({"ok": False, "error": str(e), "source_url": item.source_url})
-
-    return {"processed": len(payload.jobs), "results": results}
-
-
-@app.get("/applications")
-def list_applications(db: Session = Depends(get_db)):
-    apps = db.query(Application).order_by(Application.created_at.desc()).all()
-    out = []
-    for a in apps:
-        job = db.get(Job, a.job_id)
-        out.append({
-            "application_id": a.id,
-            "job_title": job.title if job else None,
-            "company": job.company if job else None,
-            "fit_score": a.fit_score,
-            "status": a.status,
-            "created_at": a.created_at.isoformat(),
-        })
-    return out
-
-
-class StatusUpdate(BaseModel):
-    status: str  # "captured" | "applied" | "interviewing" | "rejected" | "offer"
-
-
-@app.patch("/applications/{application_id}/status")
-def update_status(application_id: int, payload: StatusUpdate, db: Session = Depends(get_db)):
-    application = db.get(Application, application_id)
-    if not application:
-        raise HTTPException(status_code=404, detail="application not found")
-    application.status = payload.status
-    db.commit()
-    return {"application_id": application_id, "status": application.status}
-
-
-# Mounted LAST and after every API route above, so it only catches requests
-# that don't match an /resume, /jobs, /match, or /applications path -- the
-# dashboard becomes the catch-all UI at the root of the running server.
-app.mount("/", StaticFiles(directory="static", html=True), name="dashboard")
+    stem = re.sub(r"[^\w\-]+", "_", (resume.filename or "resume").rsplit(".", 1)[0])[:60]
+    return {
+        "before": before.to_dict(),
+        "after": after.to_dict(),
+        "tailor": result.to_dict(),
+        "docx_base64": base64.b64encode(out_bytes).decode(),
+        "filename": f"{stem}_tailored.docx",
+    }

@@ -1,0 +1,21 @@
+MLOps Engineer
+Location: Islamabad (Onsite)
+
+The role
+Own the platform that takes our computer vision models from notebook to production.
+
+You will:
+• Package models with Docker and deploy them to Kubernetes clusters on GCP
+• Build CI/CD for model training using GitHub Actions
+• Monitor model performance with Prometheus and Grafana
+• Optimize inference with ONNX and TensorRT on NVIDIA GPUs (CUDA)
+
+You have:
+• At least 3 years of experience in DevOps or MLOps
+• Strong Python and Bash; comfortable on Linux
+• Experience with Terraform
+• Bachelor's in Computer Engineering, Electrical Engineering or similar
+
+It's a bonus if you have:
+• Experience with Kubeflow or MLflow
+• Exposure to edge deployment on Jetson devices

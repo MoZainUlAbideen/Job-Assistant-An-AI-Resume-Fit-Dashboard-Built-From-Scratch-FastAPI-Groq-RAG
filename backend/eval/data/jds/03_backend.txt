@@ -1,0 +1,17 @@
+Backend Engineer - Payments
+In this role you will build the services that move money for 2M users.
+
+What we're looking for:
+- 4+ years of backend development experience
+- Go or Java in production
+- PostgreSQL and Redis
+- Designing REST APIs and microservices
+- Experience with Kubernetes and CI/CD
+- Strong communication skills
+
+Bonus points:
+- gRPC
+- Kafka
+- Experience in fintech or payments
+
+Perks: remote stipend, Python and Rust learning budget.

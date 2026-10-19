@@ -1,0 +1,33 @@
+{
+  "_about": "Hand labels: what a human reader would list as this posting's required / preferred skills. Written from the posting text, not from the scanner's output. Some labels are deliberately outside the skill dictionary (e.g. Figma, payments domain) so recall is measured honestly.",
+  "01_ml_engineer.txt": {
+    "required": ["PyTorch", "FastAPI", "Docker", "AWS", "Spark", "Airflow", "Machine Learning", "Python", "SQL", "Recommendation Systems"],
+    "preferred": ["Kubernetes", "MLflow|Weights & Biases", "Model Evaluation"],
+    "min_years": 2, "degree": "bachelor", "title": "Machine Learning Engineer"
+  },
+  "02_data_engineer.txt": {
+    "required": ["Data Engineering", "dbt", "Airflow", "Snowflake", "Kafka", "SQL", "Python", "AWS|GCP"],
+    "preferred": ["Terraform", "Docker", "Looker|Tableau", "Data Modeling"],
+    "min_years": 3, "degree": null, "title": "Data Engineer (Hybrid)"
+  },
+  "03_backend.txt": {
+    "required": ["Go|Java", "PostgreSQL", "Redis", "REST APIs", "Microservices", "Kubernetes", "CI/CD", "Communication"],
+    "preferred": ["gRPC", "Kafka", "Payments domain"],
+    "min_years": 4, "degree": null, "title": "Backend Engineer - Payments"
+  },
+  "04_frontend.txt": {
+    "required": ["JavaScript", "TypeScript", "React", "HTML", "CSS", "Tailwind CSS", "Unit Testing"],
+    "preferred": ["Next.js", "GraphQL", "Figma", "Node.js", "Teamwork"],
+    "min_years": 2, "degree": null, "title": "Frontend Developer"
+  },
+  "05_genai.txt": {
+    "required": ["LLMs", "AI Agents", "LangChain", "LangGraph", "RAG", "Vector Databases", "Pinecone|Qdrant", "Model Evaluation", "Prompt Engineering", "Azure", "Python", "FastAPI", "Generative AI"],
+    "preferred": ["Fine-tuning"],
+    "min_years": 1, "degree": "bachelor", "title": "Generative AI Engineer"
+  },
+  "06_linkedin_feed_noise.txt": {
+    "required": ["Python", "Computer Vision", "Deep Learning", "Artificial Intelligence"],
+    "preferred": ["OpenCV|YOLO"],
+    "min_years": null, "degree": null, "title": "AI Engineer"
+  }
+}

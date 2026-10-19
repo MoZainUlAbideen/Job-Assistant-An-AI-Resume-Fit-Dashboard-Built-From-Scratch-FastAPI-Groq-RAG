@@ -1,0 +1,29 @@
+AYESHA KHAN
+Machine Learning Engineer
+ayesha.khan@example.com | +92 300 1234567 | linkedin.com/in/ayesha-example | github.com/ayesha-example
+
+Summary
+Machine learning engineer who ships NLP and computer vision models to production with Python and PyTorch.
+
+Experience
+ML Engineer | DataWorks Lahore                                  Jan 2022 – Dec 2023
+• Built a document classification service in PyTorch and FastAPI serving 2M requests per month.
+• Reduced model inference latency by 40% by exporting models to ONNX and batching requests.
+• Wrote SQL pipelines in PostgreSQL to build training datasets from 30 million rows.
+• Worked on dashboards for the operations team using Matplotlib.
+
+Data Science Intern | Insight Labs                                Jun 2021 – Aug 2021
+• Trained XGBoost churn models and presented results to stakeholders.
+
+Projects
+Resume Search Assistant — Python, LangChain, FAISS
+• Implemented a retrieval pipeline over 5,000 resumes using FAISS vector search and Groq-hosted Llama 3.
+• Containerized the API with Docker and deployed it on a Linux VPS.
+
+Education
+BS Computer Science, FAST NUCES, 2017 – 2021
+
+Skills
+Languages: Python, SQL, Bash
+ML: PyTorch, Scikit-learn, XGBoost, Hugging Face, OpenCV
+Tools: Docker, Git, FastAPI, PostgreSQL, Linux

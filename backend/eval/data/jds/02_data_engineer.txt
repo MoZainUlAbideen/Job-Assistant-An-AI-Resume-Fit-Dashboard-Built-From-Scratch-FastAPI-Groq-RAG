@@ -1,0 +1,19 @@
+Data Engineer (Hybrid)
+About the role
+You will design and maintain our analytics platform.
+
+Responsibilities:
+* Build ELT pipelines with dbt and Airflow
+* Model data in Snowflake for the analytics team
+* Stream events with Kafka
+
+Must have:
+* 3-5 years of experience in data engineering
+* Expert SQL, solid Python
+* Experience with AWS (S3, Redshift) or GCP (BigQuery)
+
+Preferred:
+* Terraform, Docker
+* Looker or Tableau dashboards
+
+Equal opportunity employer. We value diversity.

@@ -1,0 +1,14 @@
+Frontend Developer
+Job description
+We need a frontend developer to build our customer dashboard.
+
+Requirements
+- Strong JavaScript and TypeScript
+- 2+ years with React; Next.js is a plus
+- HTML, CSS and Tailwind CSS
+- Experience writing unit tests (Jest)
+- Familiarity with GraphQL
+
+Nice to have: Figma, Node.js
+
+Please upload your CV and a link to your portfolio. You should react quickly to feedback and excel at teamwork.
