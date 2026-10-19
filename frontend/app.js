@@ -37,15 +37,19 @@ async function post(path, slowMsg) {
 
   // Render's free tier sleeps when idle; the first request can take ~a minute
   const wake = setTimeout(() => setStatus(slowMsg), 6000);
+  // never hang forever: a cold Render start is ~60s, so give up after 100s with a clear message
+  const ctrl = new AbortController();
+  const kill = setTimeout(() => ctrl.abort(), 100000);
   try {
-    const res = await fetch(API + path, { method: "POST", body });
+    const res = await fetch(API + path, { method: "POST", body, signal: ctrl.signal });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.detail || `The server returned an error (${res.status}).`);
     return data;
   } catch (e) {
-    if (e instanceof TypeError) throw new Error("Couldn't reach the server. Check your connection, or try again in a minute while it starts up.");
+    if (e.name === "AbortError") throw new Error(`No response from ${API} after 100 seconds. The server may be down or the API address in config.js is wrong.`);
+    if (e instanceof TypeError) throw new Error(`Couldn't reach ${API}. Check the API address in config.js and that the backend allows this site (ALLOWED_ORIGINS).`);
     throw e;
-  } finally { clearTimeout(wake); }
+  } finally { clearTimeout(wake); clearTimeout(kill); }
 }
 
 form.addEventListener("submit", async (ev) => {
